@@ -92,7 +92,9 @@ void BasicEAHandler::run(int numGens){
         }
         getNextGen(fitness);
     }
+    writePopulationToFile(fitness, "trial_naive_" + trialS + ".txt");
     fullMatchFP.close();
+    charMatchFP.close();
 }
 
 void BasicEAHandler::getNextGen(std::vector<std::tuple<Individual, int>> fitness){
@@ -157,3 +159,20 @@ std::map<std::string, int> BasicEAHandler::getTaskUsage(){
     return M;
 }
 
+void BasicEAHandler::writePopulationToFile(
+    std::vector<std::tuple<Individual, int>>& fitness, std::string fileName){
+    std::ofstream fp;
+    fp.open(fileName, std::ios::out | std::ios::trunc);
+    fp << "Targets\n";
+    fp << "########################\n";
+    for(std::string target : mTargets)
+        fp << target << "\n";
+    fp << "\n" << "Fitness Data" << "\n";
+    fp << "########################\n";
+    for(std::tuple<Individual, int> t : fitness){
+        Individual ind = (Individual)std::get<0>(t);
+        int score = (int)std::get<1>(t);
+        fp << ind.getString() << " -> " << score << "\n";
+    }
+    fp.close();
+}

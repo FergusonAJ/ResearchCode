@@ -20,7 +20,7 @@ public:
     void getNextGen(std::vector<std::tuple<Individual, int>> fitness);
     std::map<std::string, int> getSpread();
     std::map<std::string, int> getTaskUsage();
-
+    void writePopulationToFile(std::vector<std::tuple<Individual, int>>& fitness, std::string fileName);
 protected:
     int mGenSize, mTrialNum;
     std::vector<Individual> mCurGen;
