@@ -1,0 +1,28 @@
+### Configuration file for simple EA vs EcoEA testing
+### 8/14/18
+### Austin Ferguson
+
+NUM_STRINGS = 5
+STRING_LENGTH  = 15
+GEN_SIZE = 500
+NUM_GENS = 1000
+INIT_STEPS = 3
+DATA_TRIM_FACTOR = 10
+TASK_PCT = 0.99# ((STRING_LENGTH - 1)/STRING_LENGTH) - 0.01
+
+PCT_CARRY = 0.1
+PCT_MUT = 0.5
+PCT_CROSS = 0.2
+MUT_RATE = 2*(1/STRING_LENGTH)
+MATCH_BONUS = 10
+
+INFLOW = 100
+OUTFLOW = 0.1
+MAX_AMOUNT = STRING_LENGTH / NUM_STRINGS
+CONSUMPTION_FRAC = 0.025
+SPECIATION_FACTOR = 1
+
+ALPHABET = []
+for i in range(2):
+    ALPHABET.append(chr(ord('A') + i))
+#['A', 'B', 'C', 'D', 'E']
