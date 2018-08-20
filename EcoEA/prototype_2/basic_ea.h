@@ -2,6 +2,8 @@
 // 8/20/18
 // Austin Ferguson
 
+#pragma once
+
 #include <vector>
 #include <string>
 #include <tuple>
@@ -15,8 +17,8 @@ public:
     ~BasicEAHandler();
     void printCurGen();
     void printTargets();
-    std::vector<std::tuple<Individual, int>> getFitness();
-    void run(int numGens);
+    virtual std::vector<std::tuple<Individual, int>> getFitness();
+    virtual void run(int numGens);
     void getNextGen(std::vector<std::tuple<Individual, int>> fitness);
     std::map<std::string, int> getSpread();
     std::map<std::string, int> getTaskUsage();
@@ -27,3 +29,6 @@ protected:
     std::vector<std::string> mTargets;
 };
 
+inline bool compareHelper(std::tuple<Individual, int> a, std::tuple<Individual, int> b) { 
+    return (std::get<1>(a) > std::get<1>(b)); 
+}

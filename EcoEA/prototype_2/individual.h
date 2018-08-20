@@ -2,6 +2,8 @@
 // 8/20/18
 // Austin Ferguson
 
+#pragma once
+
 #include <string>
 #include <iostream>
 

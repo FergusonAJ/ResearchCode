@@ -5,10 +5,10 @@
 #define NUM_STRINGS 5
 #define STRING_LENGTH  15
 #define GEN_SIZE 500
-#define NUM_GENS 1000
+#define NUM_GENS 10000
 #define INIT_STEPS 3
 #define DATA_TRIM_FACTOR 10
-#define TASK_PCT 1//((STRING_LENGTH - 1)/STRING_LENGTH) - 0.01
+#define TASK_PCT 1 //((STRING_LENGTH - 1)/STRING_LENGTH) - 0.01
 
 #define PCT_CARRY 0.1
 #define PCT_MUT 0.5
@@ -23,4 +23,4 @@
 #define SPECIATION_FACTOR 1
 
 #define ALPHABET_START 'A'
-#define ALPHABET_END 'B'
+#define ALPHABET_END 'D'

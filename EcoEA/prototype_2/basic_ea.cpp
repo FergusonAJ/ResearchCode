@@ -10,9 +10,6 @@
 #include "basic_ea.h"
 #include "ea_utils.h"
 
-bool compareHelper(std::tuple<Individual, int> a, std::tuple<Individual, int> b) { 
-    return (std::get<1>(a) > std::get<1>(b)); 
-}
 
 BasicEAHandler::BasicEAHandler(int trialNum){
     mTrialNum = trialNum;
@@ -56,9 +53,9 @@ std::vector<std::tuple<Individual, int>> BasicEAHandler::getFitness(){
             } 
             int S = 0;
             int bonus = 0;
-            if(matches > length / 2)
-                S = pow((((2 * matches) / length) - 1), 2 * SPECIATION_FACTOR);
-            bonus = pow(2, S) * 5;
+            if(matches > length / 2.0f)
+                S = pow((((2.0f * matches) / length) - 1), 2.0f * SPECIATION_FACTOR);
+            bonus = pow(2.0f, S) * 5;
             score += bonus;
         }
         result.push_back(std::make_tuple(curInd, score));
@@ -99,26 +96,37 @@ void BasicEAHandler::run(int numGens){
 
 void BasicEAHandler::getNextGen(std::vector<std::tuple<Individual, int>> fitness){
     std::vector<Individual> newGen;
-    for(int i = 0; i < (int)(PCT_CARRY * mGenSize); i++){
-        int idx = (int)pow((double)rand() / RAND_MAX, 3) * mGenSize;
+    int numCarry = (int)(PCT_CARRY * (float)mGenSize);
+    for(int i = 0; i < numCarry; i++){
+        int idx = (int)(pow((double)rand() / RAND_MAX, 3) * mGenSize);
         newGen.push_back(std::get<0>(fitness[idx]));
     }
-    for(int i = 0; i < (int)(PCT_MUT * mGenSize); i++){
-        int idx = (int)pow((double)rand() / RAND_MAX, 3) * mGenSize;
+    int numMut = (int)(PCT_MUT * (float)mGenSize);
+    for(int i = 0; i < numMut; i++){
+        int idx = (int)(pow((double)rand() / RAND_MAX, 3) * mGenSize);
         newGen.push_back(std::get<0>(fitness[idx]).getMutation());
     }
-    for(int i = 0; i < (int)(PCT_CROSS * mGenSize); i++){
-        int idxA = (int)pow((double)rand() / RAND_MAX, 3) * mGenSize;
-        int idxB = (int)pow((double)rand() / RAND_MAX, 3) * mGenSize;
+    int numCross = (int)(PCT_CROSS * (float)mGenSize);
+    for(int i = 0; i < numCross; i++){
+        int idxA = (int)(pow((double)rand() / RAND_MAX, 3) * mGenSize);
+        int idxB = (int)(pow((double)rand() / RAND_MAX, 3) * mGenSize);
         newGen.push_back(std::get<0>(fitness[idxA]).getCrossover(std::get<0>(fitness[idxB])));
     }
     int numRandom = GEN_SIZE - newGen.size();
     for(std::string s : genRandomStrings(numRandom)){
         newGen.push_back(Individual(s));
     }
+    /* 
+    std::cout << "len(newGen):" << newGen.size() << std::endl;
+    std::cout << "numCarry:" << numCarry << std::endl;
+    std::cout << "numMut:" << numMut << std::endl;
+    std::cout << "numCross:" << numCross << std::endl;
+    std::cout << "numRandom:" << numRandom << std::endl;
+    */
     mCurGen.clear();
-    for(Individual ind : newGen)
+    for(Individual ind : newGen){
         mCurGen.push_back(ind);
+    }
 }
 
 std::map<std::string, int> BasicEAHandler::getSpread(){
