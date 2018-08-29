@@ -17,18 +17,18 @@ public:
     ~BasicEAHandler();
     void printCurGen();
     void printTargets();
-    virtual std::vector<std::tuple<Individual, int>> getFitness();
+    virtual std::vector<std::tuple<Individual, double>> getFitness();
     virtual void run(int numGens);
-    void getNextGen(std::vector<std::tuple<Individual, int>> fitness);
+    void getNextGen(std::vector<std::tuple<Individual, double>> fitness);
     std::map<std::string, int> getSpread();
     std::map<std::string, int> getTaskUsage();
-    void writePopulationToFile(std::vector<std::tuple<Individual, int>>& fitness, std::string fileName);
+    void writePopulationToFile(std::vector<std::tuple<Individual, double>>& fitness, std::string fileName);
 protected:
     int mGenSize, mTrialNum;
     std::vector<Individual> mCurGen;
     std::vector<std::string> mTargets;
 };
 
-inline bool compareHelper(std::tuple<Individual, int> a, std::tuple<Individual, int> b) { 
+inline bool compareHelper(std::tuple<Individual, double> a, std::tuple<Individual, double> b) { 
     return (std::get<1>(a) > std::get<1>(b)); 
 }

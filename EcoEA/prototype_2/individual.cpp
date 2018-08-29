@@ -33,10 +33,11 @@ Individual Individual::getMutation(){
 
 Individual Individual::getCrossover(Individual other){
     std::string newS("");
+    std::string otherData = other.getString();
     for(int i = 0; i < mData.length(); i++)
     {
         if((double)rand() / RAND_MAX < 0.5){
-            newS += other.getString()[i];
+            newS += otherData[i];
         }
         else
             newS += mData[i];

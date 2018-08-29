@@ -6,3 +6,5 @@
 #include <string>
 
 std::vector<std::string> genRandomStrings(int numStrings);
+
+void printStringOverlap(std::vector<std::string> vec);

@@ -20,6 +20,7 @@ BasicEAHandler::BasicEAHandler(int trialNum){
     }
 
     mTargets = genRandomStrings(NUM_STRINGS);
+    //printStringOverlap(mTargets);
 }
 
 BasicEAHandler::~BasicEAHandler(){
@@ -38,11 +39,11 @@ void BasicEAHandler::printTargets(){
     }
 }
     
-std::vector<std::tuple<Individual, int>> BasicEAHandler::getFitness(){
-    std::vector<std::tuple<Individual, int>> result;
+std::vector<std::tuple<Individual, double>> BasicEAHandler::getFitness(){
+    std::vector<std::tuple<Individual, double>> result;
     for(Individual curInd : mCurGen){
         std::string s = curInd.getString();
-        int score = 0;
+        double score = 0;
         for(std::string target : mTargets){
             int matches = 0;
             int length = target.length();
@@ -51,16 +52,18 @@ std::vector<std::tuple<Individual, int>> BasicEAHandler::getFitness(){
                 if(s[i] == target[i])
                     matches++;
             } 
-            int S = 0;
-            int bonus = 0;
+            double S = 0;
+            double bonus = 0;
             if(matches > length / 2.0f)
                 S = pow((((2.0f * matches) / length) - 1), 2.0f * SPECIATION_FACTOR);
+            if(S == 0)
+                S = matches / 1000.0f;
             bonus = pow(2.0f, S) * 5;
             score += bonus;
         }
         result.push_back(std::make_tuple(curInd, score));
     }
-    std::sort(result.begin(), result.end(), compareHelper); 
+    std::sort(result.begin(), result.end(), compareHelper);
     return result;
 }
 
@@ -72,20 +75,22 @@ void BasicEAHandler::run(int numGens){
     fullMatchFP << "target, generation, matches\n";
     charMatchFP.open("trial_naive_char_match_" + trialS + ".csv", std::ios::out | std::ios::trunc);
     charMatchFP << "target, generation, char_matches\n";
-    std::vector<std::tuple<Individual, int>> fitness;
+    std::vector<std::tuple<Individual, double>> fitness;
     std::map<std::string, int> spread;
     std::map<std::string, int> taskUsage;
     for(int i = 0; i < numGens; i++){
         fitness = getFitness();
-        spread = getSpread();
-        taskUsage = getTaskUsage();
-        for(std::string target : mTargets){
-            fullMatchFP << target << ",";
-            fullMatchFP << i << ",";
-            fullMatchFP << taskUsage[target] << "\n";
-            charMatchFP << target << ",";
-            charMatchFP << i << ",";
-            charMatchFP << spread[target] << "\n";
+        if(i% DATA_TRIM_FACTOR == 0){
+            spread = getSpread();
+            taskUsage = getTaskUsage();
+            for(std::string target : mTargets){
+                fullMatchFP << target << ",";
+                fullMatchFP << i << ",";
+                fullMatchFP << taskUsage[target] << "\n";
+                charMatchFP << target << ",";
+                charMatchFP << i << ",";
+                charMatchFP << spread[target] << "\n";
+            }
         }
         getNextGen(fitness);
     }
@@ -94,7 +99,7 @@ void BasicEAHandler::run(int numGens){
     charMatchFP.close();
 }
 
-void BasicEAHandler::getNextGen(std::vector<std::tuple<Individual, int>> fitness){
+void BasicEAHandler::getNextGen(std::vector<std::tuple<Individual, double>> fitness){
     std::vector<Individual> newGen;
     int numCarry = (int)(PCT_CARRY * (float)mGenSize);
     for(int i = 0; i < numCarry; i++){
@@ -132,8 +137,8 @@ void BasicEAHandler::getNextGen(std::vector<std::tuple<Individual, int>> fitness
 std::map<std::string, int> BasicEAHandler::getSpread(){
     std::map<std::string, int> M;
     for(std::string target : mTargets){
+        M[target] = 0;
         int length = target.length();
-        int score = 0;
         for(Individual ind : mCurGen){
             std::string s = ind.getString();    
             int matches = 0;
@@ -141,9 +146,9 @@ std::map<std::string, int> BasicEAHandler::getSpread(){
                 if(target[i] == s[i])
                     matches++;
             }
-            score += matches;
+            if(matches > M[target])
+                M[target] = matches;
         }
-        M[target] = score;
     }
     return M;
 }
@@ -168,7 +173,7 @@ std::map<std::string, int> BasicEAHandler::getTaskUsage(){
 }
 
 void BasicEAHandler::writePopulationToFile(
-    std::vector<std::tuple<Individual, int>>& fitness, std::string fileName){
+    std::vector<std::tuple<Individual, double>>& fitness, std::string fileName){
     std::ofstream fp;
     fp.open(fileName, std::ios::out | std::ios::trunc);
     fp << "Targets\n";
@@ -177,9 +182,9 @@ void BasicEAHandler::writePopulationToFile(
         fp << target << "\n";
     fp << "\n" << "Fitness Data" << "\n";
     fp << "########################\n";
-    for(std::tuple<Individual, int> t : fitness){
+    for(std::tuple<Individual, double> t : fitness){
         Individual ind = (Individual)std::get<0>(t);
-        int score = (int)std::get<1>(t);
+        double score = (double)std::get<1>(t);
         fp << ind.getString() << " -> " << score << "\n";
     }
     fp.close();

@@ -1,7 +1,9 @@
 #!/bin/bash
-
+date
+make
+date
 ./App $1
-
+date
 rootFolder=$(pwd)
 dt=$(date +"%d-%m-%y_%H-%M_%S")
 mkdir results/$dt
@@ -30,7 +32,6 @@ do
   rm $rootFolder/results/$dt/naive/$j/Rplots.pdf  > /dev/null
   cd $rootFolder/results/$dt
   echo "Visualizations done for trial #$j"
-  rm ./naive/Rplots.pdf > /dev/null 
 done
 cp $rootFolder/*.cpp $rootFolder/results/$dt/src/
 cp $rootFolder/*.h $rootFolder/results/$dt/src/

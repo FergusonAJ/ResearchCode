@@ -5,7 +5,7 @@
 class EcoEAHandler : BasicEAHandler{
 public:
     EcoEAHandler(int trialNum) : BasicEAHandler(trialNum){}; 
-    std::vector<std::tuple<Individual, int>> getFitness();
+    std::vector<std::tuple<Individual, double>> getFitness();
     void run(int numGens);
     
 protected:
