@@ -53,7 +53,6 @@ int main(int argc, char ** argv)
     size_t tourneyCount = GetConfig().Fetch<int>("TOURNEY_COUNT"); 
     size_t eliteCount = GetConfig().Fetch<int>("ELITE_COUNT"); 
     size_t eliteCopies = GetConfig().Fetch<int>("ELITE_COPIES");
-    size_t numRulesets = GetConfig().Fetch<int>("NUM_RULESETS");
     std::string fitFunStr = GetConfig().Fetch<std::string>("FIT_FUN");
     std::string outputDir = GetConfig().Fetch<std::string>("OUTPUT_DIR");
     std::ostringstream oss;
@@ -130,20 +129,20 @@ int main(int argc, char ** argv)
     worldRuleset.SetCache(true);
 
     //Fill the world with random orgs
-    for(size_t i = 0; i < numRulesets; i++){
+    for(size_t i = 0; i < popSize; i++){
         worldRuleset.Inject(GetRandomOrg_Classic_Ruleset(random));
     }
     worldRuleset.Update();
     SetRulesetWorldPtr(&worldRuleset);
 
-    //std::multimap<double, size_t> fit_map;
-    //double cur_fit = 0;
+    std::multimap<double, size_t>rulesetFitnessMap;
+    std::vector<std::multimap<double, size_t>> icFitnessMaps(4);
+    SetRulesetFitnessMapPtr(&rulesetFitnessMap);
+    SetICQuadFitnessMapPtr(&icFitnessMaps[0], 0);
+    SetICQuadFitnessMapPtr(&icFitnessMaps[1], 1);
+    SetICQuadFitnessMapPtr(&icFitnessMaps[2], 2);
+    SetICQuadFitnessMapPtr(&icFitnessMaps[3], 3);
 
-    //fit_map.clear();
-    // for (size_t id = 0; id < worldIC.GetSize(); id++) {
-    //    cur_fit = worldIC.GetCache(id);
-    //    fit_map.insert( std::make_pair(cur_fit, id) );
-    //}
     std::fstream icFP;
     std::fstream rulesetFP;
     //Main Loop
@@ -156,11 +155,6 @@ int main(int argc, char ** argv)
                 EliteSelect(*worldICs[ic], eliteCount, eliteCopies);
             TournamentSelect(*worldICs[ic], tourneySize, tourneyCount);
         }
-        //fit_map.clear();
-        //for (size_t id = 0; id < worldIC.GetSize(); id++) {
-        //    cur_fit = worldIC.GetCache(id);
-        //    fit_map.insert( std::make_pair(cur_fit, id) );
-        //}
         SetMaxFitIC(0);//fit_map.rbegin()->second);
         if(eliteCount > 0 && eliteCopies > 0)
             EliteSelect(worldRuleset, eliteCount, eliteCopies);
@@ -190,6 +184,17 @@ int main(int argc, char ** argv)
             rulesetFP << "Ruleset ID: " << id << std::endl;
             rulesetFP << "Fitness: " << worldRuleset.GetCache(id) << std::endl;
             rulesetFP << std::endl;
+        }
+        //Update fitness maps
+        rulesetFitnessMap.clear();
+        for (size_t id = 0; id < worldRuleset.GetSize(); id++) {
+            rulesetFitnessMap.insert(std::make_pair(worldRuleset.GetCache(id), id));
+        }
+        for(size_t ic = 0; ic < 4; ic++){
+            icFitnessMaps[ic].clear();
+            for (size_t id = 0; id < worldICs[ic]->GetSize(); id++) {
+                icFitnessMaps[ic].insert(std::make_pair(worldICs[ic]->GetCache(id), id));
+            }
         }
         rulesetFP.close(); 
         worldRuleset.DoMutations();

@@ -22,7 +22,7 @@
 empCA::CellularAutomaton<unsigned char> ca;
 std::function<unsigned char(emp::Random &)> spawnFunc;
 int width, height, subWidth, subHeight, subX, subY, numSteps, checkSteps;
-size_t numCollaborators;
+size_t numBestCollaborators, numRandCollaborators;
 bool canMove, mustMove;
 std::string name;
 float mutRateFactor;
@@ -43,7 +43,8 @@ void Initialize(emp::Random* ptr){
     mutRateFactor = GetConfig().Fetch<float>("MUT_RATE_SCALE");
     name = GetConfig().Fetch<std::string>("AUTOMATON");
     checkSteps = GetConfig().Fetch<int>("CHECK_STEPS");
-    numCollaborators = (size_t)GetConfig().Fetch<int>("NUM_COLLABORATORS");
+    numBestCollaborators = (size_t)GetConfig().Fetch<int>("NUM_BEST_COLLABORATORS");
+    numRandCollaborators = (size_t)GetConfig().Fetch<int>("NUM_RAND_COLLABORATORS");
     canMove = GetConfig().Fetch<bool>("CAN_MOVE");
     mustMove = GetConfig().Fetch<bool>("MUST_MOVE");
     bBlackMask = (unsigned int)(GetConfig().Fetch<int>("B_BLACK_MASK"));

@@ -90,7 +90,6 @@ int main(int argc, char ** argv)
     oss.str("");
     oss << outputDir << "/CONTROL_fitness" <<  idStr << ".csv";
     world.SetupFitnessFile(oss.str(), true);
-    //world.SetupPopulationFile("./output/pop.csv", true);
     world.SetCache(true);
 
     //Fill the world with random orgs
@@ -114,7 +113,7 @@ int main(int argc, char ** argv)
         world.Update();
     }
 
-    // Last generation image generation
+    // Last generation record keeping
     std::cout << "Last generation finished! Finishing up..." << std::endl; 
     std::fstream lastGenFP;
     oss.str("");

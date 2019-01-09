@@ -54,7 +54,6 @@ int main(int argc, char ** argv)
     size_t tourneyCount = GetConfig().Fetch<int>("TOURNEY_COUNT"); 
     size_t eliteCount = GetConfig().Fetch<int>("ELITE_COUNT"); 
     size_t eliteCopies = GetConfig().Fetch<int>("ELITE_COPIES");
-    size_t numRulesets = GetConfig().Fetch<int>("NUM_RULESETS");
     std::string fitFunStr = GetConfig().Fetch<std::string>("FIT_FUN");
     std::string outputDir = GetConfig().Fetch<std::string>("OUTPUT_DIR");
     std::ostringstream oss;
@@ -116,7 +115,7 @@ int main(int argc, char ** argv)
     worldRuleset.SetCache(true);
 
     //Fill the world with random orgs
-    for(size_t i = 0; i < numRulesets; i++){
+    for(size_t i = 0; i < popSize; i++){
         worldRuleset.Inject(GetRandomOrg_Classic_Ruleset(random));
     }
     worldRuleset.Update();
@@ -126,15 +125,6 @@ int main(int argc, char ** argv)
     //worldRuleset.SetupFitnessFile("./output/fitness_ruleset.csv", true);
     //worldIC.SetupPopulationFile("./output/pop_ic.csv", true);
     //worldRuleset.SetupPopulationFile("./output/pop_ruleset.csv", true);
-
-    std::multimap<double, size_t> fit_map;
-    double cur_fit = 0;
-
-    fit_map.clear();
-    for (size_t id = 0; id < worldIC.GetSize(); id++) {
-        cur_fit = worldIC.GetCache(id);
-        fit_map.insert( std::make_pair(cur_fit, id) );
-    }
     std::fstream icFP;
     std::fstream rulesetFP;
     std::multimap<double, size_t> icFitnessMap, rulesetFitnessMap;
@@ -148,12 +138,6 @@ int main(int argc, char ** argv)
         if(eliteCount > 0 && eliteCopies > 0)
             EliteSelect(worldIC, eliteCount, eliteCopies);
         TournamentSelect(worldIC, tourneySize, tourneyCount);
-        fit_map.clear();
-        for (size_t id = 0; id < worldIC.GetSize(); id++) {
-            cur_fit = worldIC.GetCache(id);
-            fit_map.insert( std::make_pair(cur_fit, id) );
-        }
-        SetMaxFitIC(fit_map.rbegin()->second);
         if(eliteCount > 0 && eliteCopies > 0)
             EliteSelect(worldRuleset, eliteCount, eliteCopies);
         TournamentSelect(worldRuleset, tourneySize, tourneyCount);

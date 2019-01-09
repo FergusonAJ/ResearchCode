@@ -39,7 +39,8 @@ void ConfigInit(ConfigLoader& config){
     config.Register("ELITE_COUNT", loader_int, delete_int);
     config.Register("ELITE_COPIES", loader_int, delete_int);
     config.Register("NUM_RULESETS", loader_int, delete_int);
-    config.Register("NUM_COLLABORATORS", loader_int, delete_int);
+    config.Register("NUM_BEST_COLLABORATORS", loader_int, delete_int);
+    config.Register("NUM_RAND_COLLABORATORS", loader_int, delete_int);
     
     config.Register("FIT_FUN", loader_string, delete_int);
     config.Register("CHECK_STEPS", loader_int, delete_int);
