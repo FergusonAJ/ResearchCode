@@ -46,12 +46,15 @@ public:
         }
     }
 
-    void Load(const std::string& filename){
+    int Load(const std::string& filename){
         std::string line;
         std::string key;
         std::string value;
         std::ifstream stream;
         stream.open(filename, std::ios::in);
+        if(!stream.is_open()){
+            return 1;
+        }
         while(std::getline(stream, line)){
             size_t splitPos = line.find(":");
             if(splitPos !=  std::string::npos){
@@ -67,6 +70,7 @@ public:
             }
         }
         stream.close();
+        return 0;
     }
 
     void Register(const std::string& key, func_convert_t& conv_func, func_delete_t& del_func){

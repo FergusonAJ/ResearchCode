@@ -34,9 +34,17 @@
 int main(int argc, char ** argv)
 {
     //Load Configuration
+    if(argc < 2){
+        std::cerr << "This program requires exactly one command line argument: ";
+        std::cerr << "the configuration filename!" << std::endl;
+        return 1;
+    }
     ConfigLoader config;
     ConfigInit(config); 
-    config.Load("config.txt");
+    if(config.Load(std::string(argv[1])) != 0){
+        std::cerr << "Error in opening config file: " << argv[1] << "!" << std::endl;
+        return 1;
+    }
      
     //Initialize organism variables
     emp::Random random;

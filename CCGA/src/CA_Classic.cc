@@ -26,11 +26,21 @@
 
 int main(int argc, char ** argv)
 {
-    srand(time(NULL));
     //Load Configuration
+    srand(time(NULL));
+    if(argc < 2){
+        std::cerr << "This program requires exactly one command line argument: ";
+        std::cerr << "the configuration filename!" << std::endl;
+        return 1;
+    }
+    std::string configFilename = std::string(argv[1]);
     ConfigLoader config;
     ConfigInit(config); 
-    config.Load("config.txt");
+    if(config.Load(configFilename) != 0){
+        std::cerr << "Error in opening config file: " << argv[1] << "!" << std::endl;
+        return 1;
+    }
+    std::cout << "Using config file: " << configFilename << std::endl;
      
     //Initialize organism variables
     emp::Random random;
@@ -51,8 +61,8 @@ int main(int argc, char ** argv)
     std::string idStr;
 
     oss.str("");
-    if(argc > 1){
-        for(int i = 1; i < argc; i++){
+    if(argc > 2){
+        for(int i = 2; i < argc; i++){
             oss << "_" << argv[i];
         }
     }
