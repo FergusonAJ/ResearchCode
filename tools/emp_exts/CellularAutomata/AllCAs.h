@@ -1,0 +1,5 @@
+#include "./ca/Conway.h"
+#include "./ca/Wireworld.h"
+#include "./ca/Replicator.h"
+#include "./ca/Fredkin.h"
+#include "./ca/HighLife.h"
