@@ -7,7 +7,6 @@ emp::World<emp::vector<bool>>* icWorldPtr;
 emp::World<emp::vector<bool>>* rulesetWorldPtr;
 std::multimap<double, size_t>* icFitnessMapPtr;
 std::multimap<double, size_t>* rulesetFitnessMapPtr;
-size_t maxFitIC = 0;
 
 //Utility functions
 void SetICWorldPtr(emp::World<emp::vector<bool>>* ptr){
@@ -22,26 +21,15 @@ void SetICFitnessMapPtr(std::multimap<double, size_t>* ptr){
 void SetRulesetFitnessMapPtr(std::multimap<double, size_t>* ptr){
     rulesetFitnessMapPtr = ptr;
 }
-void SetMaxFitIC(size_t idx){
-    maxFitIC = idx;
-}
 
 //Generate a new IC
 std::vector<bool> GetRandomOrg_Classic_IC(emp::Random& rand){
-    std::vector<bool> vec(width * height);
-    for(size_t i = 0; i < vec.size(); i++){
-        vec[i] = (spawnFunc(rand) == 1);
-    }
-    return vec;
+    return GenerateRandomBitstring(rand, width * height);
 }
 
 //Generate a new ruleset
 std::vector<bool> GetRandomOrg_Classic_Ruleset(emp::Random& rand){
-    std::vector<bool> vec(18);
-    for(size_t i = 0; i < vec.size(); i++){
-        vec[i] = (spawnFunc(rand) == 1);
-    }
-    return vec;
+    return GenerateRandomBitstring(rand, 18);
 }
 
 //Print function - IC

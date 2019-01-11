@@ -121,15 +121,12 @@ int main(int argc, char ** argv)
     worldRuleset.Update();
     SetRulesetWorldPtr(&worldRuleset);
 
-    //worldIC.SetupFitnessFile("./output/fitness_ic.csv", true);
-    //worldRuleset.SetupFitnessFile("./output/fitness_ruleset.csv", true);
-    //worldIC.SetupPopulationFile("./output/pop_ic.csv", true);
-    //worldRuleset.SetupPopulationFile("./output/pop_ruleset.csv", true);
     std::fstream icFP;
     std::fstream rulesetFP;
     std::multimap<double, size_t> icFitnessMap, rulesetFitnessMap;
     SetICFitnessMapPtr(&icFitnessMap);
     SetRulesetFitnessMapPtr(&rulesetFitnessMap);
+    
     //Main Loop
     for(size_t i = 0; i < numGens; i++){
         worldRuleset.ClearCache();
@@ -175,29 +172,15 @@ int main(int argc, char ** argv)
         worldRuleset.Update();
     }
 
-    // Last generation image generation
+    // Last generation file output
     std::cout << "Last generation finished! Finishing up..." << std::endl; 
-   
     oss.str(""); 
     oss << outputDir << "/CLASSIC_IC_Last_Gen" << idStr << ".txt";
-    icFP.open(oss.str(), std::ios::out | std::ios::trunc);
-    for (size_t id = 0; id < worldIC.GetSize(); id++) {
-        icFP << "IC ID: " << id << std::endl;
-        icFP << "Fitness: " << worldIC.GetCache(id) << std::endl;
-        print_fun_classic_ic(worldIC.GetOrg(id), icFP);
-        icFP << std::endl;
-    }
-    icFP.close(); 
-        
+    WriteLastGenToFile(oss.str(), worldIC, print_fun_classic_ic);
     oss.str("");
     oss << outputDir << "/CLASSIC_Ruleset_Last_Gen" << idStr << ".txt";
-    rulesetFP.open(oss.str(), std::ios::out | std::ios::trunc);
-    for (size_t id = 0; id < worldRuleset.GetSize(); id++) {
-        rulesetFP << "Ruleset ID: " << id << std::endl;
-        rulesetFP << "Fitness: " << worldRuleset.GetCache(id) << std::endl;
-        print_fun_classic_ruleset(worldRuleset.GetOrg(id), rulesetFP);
-        rulesetFP << std::endl;
-    }
+    WriteLastGenToFile(oss.str(), worldRuleset, print_fun_classic_ruleset);
+    
     //Finished! 
     std::cout << "Done!" << std::endl;
 }

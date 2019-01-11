@@ -2,11 +2,7 @@
 
 //Generate a new bit string
 std::vector<bool> GetRandomOrg_Control(emp::Random& rand){
-    std::vector<bool> vec(width * height + 18);
-    for(size_t i = 0; i < vec.size(); i++){
-        vec[i] = (spawnFunc(rand) == 1);
-    }
-    return vec;
+    return GenerateRandomBitstring(rand, width * height + 18);
 }
 
 //Print function, dump ruleset and initial configuration

@@ -26,6 +26,7 @@
 
 int main(int argc, char ** argv)
 {
+    srand(time(NULL));
     //Load Configuration
     if(argc < 2){
         std::cerr << "This program requires exactly one command line argument: ";
@@ -155,7 +156,6 @@ int main(int argc, char ** argv)
                 EliteSelect(*worldICs[ic], eliteCount, eliteCopies);
             TournamentSelect(*worldICs[ic], tourneySize, tourneyCount);
         }
-        SetMaxFitIC(0);//fit_map.rbegin()->second);
         if(eliteCount > 0 && eliteCopies > 0)
             EliteSelect(worldRuleset, eliteCount, eliteCopies);
         TournamentSelect(worldRuleset, tourneySize, tourneyCount);
@@ -201,30 +201,17 @@ int main(int argc, char ** argv)
         worldRuleset.Update();
     }
 
-    // Last generation image generation
+    // Last generation file output
     std::cout << "Last generation finished! Finishing up..." << std::endl; 
-    
     for(size_t ic = 0; ic < 4; ic++){ 
         oss.str(""); 
         oss << outputDir << "/QUADS_IC_" << ic << "_Last_Gen" << idStr << ".txt";
-        icFP.open(oss.str(), std::ios::out | std::ios::trunc);
-        for (size_t id = 0; id < worldICs[ic]->GetSize(); id++) {
-            icFP << "IC ID: " << id << std::endl;
-            icFP << "Fitness: " << worldICs[ic]->GetCache(id) << std::endl;
-            print_fun_quad_ic(worldICs[ic]->GetOrg(id), icFP);
-            icFP << std::endl;
-        }
-        icFP.close(); 
+        WriteLastGenToFile(oss.str(), *worldICs[ic], print_fun_quad_ic);
     }
     oss.str("");
     oss << outputDir << "/QUADS_Ruleset_Last_Gen" << idStr << ".txt";
-    rulesetFP.open(oss.str(), std::ios::out | std::ios::trunc);
-    for (size_t id = 0; id < worldRuleset.GetSize(); id++) {
-        rulesetFP << "Ruleset ID: " << id << std::endl;
-        rulesetFP << "Fitness: " << worldRuleset.GetCache(id) << std::endl;
-        print_fun_classic_ruleset(worldRuleset.GetOrg(id), rulesetFP);
-        rulesetFP << std::endl;
-    }
+    WriteLastGenToFile(oss.str(), worldRuleset, print_fun_classic_ruleset);
+    
     //Finished! 
     std::cout << "Done!" << std::endl;
 }

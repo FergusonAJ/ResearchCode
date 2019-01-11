@@ -20,11 +20,7 @@ void SetICQuadFitnessMapPtr(std::multimap<double, size_t>* ptr, size_t idx){
 }
 //Get random organism functions
 std::vector<bool> GetRandomOrg_Quad_IC(emp::Random& rand){
-    std::vector<bool> vec(width * height / 4);
-    for(size_t i = 0; i < vec.size(); i++){
-        vec[i] = (spawnFunc(rand) == 1);
-    }
-    return vec;
+    return GenerateRandomBitstring(rand, width * height / 4);
 }
 
 //Print functions

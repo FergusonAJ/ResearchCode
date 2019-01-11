@@ -46,7 +46,7 @@ void AssembleParts_Stripes(size_t idx, std::vector<bool>& org, bool best, size_t
     if(idx != 0){
         auto iterR = rulesetFitnessMapPtr->rbegin();
         if(best && rulesetFitnessMapPtr->size() > iter){
-            for(size_t n = 0; n < iter - 1; n++){ 
+            for(size_t n = 1; n <= iter; n++){ 
                 iterR++;
             }
             idx = iterR->second;
@@ -59,7 +59,7 @@ void AssembleParts_Stripes(size_t idx, std::vector<bool>& org, bool best, size_t
     if(idx != 1){
         auto iter1 = icFitnessMapPtrs[0]->rbegin();
         if(best && icFitnessMapPtrs[0]->size() > iter){
-            for(size_t n = 0; n < iter - 1; n++){ 
+            for(size_t n = 1; n <= iter; n++){ 
                 iter1++;
             }
             idx = iter1->second;
@@ -73,7 +73,7 @@ void AssembleParts_Stripes(size_t idx, std::vector<bool>& org, bool best, size_t
     if(idx != 2){
         auto iter2 = icFitnessMapPtrs[1]->rbegin();
         if(best && icFitnessMapPtrs[1]->size() > iter){
-            for(size_t n = 0; n < iter - 1; n++){ 
+            for(size_t n = 1; n <= iter; n++){ 
                 iter2++;
             }
             idx = iter2->second;
@@ -87,7 +87,7 @@ void AssembleParts_Stripes(size_t idx, std::vector<bool>& org, bool best, size_t
     if(idx != 3){
         auto iter3 = icFitnessMapPtrs[2]->rbegin();
         if(best && icFitnessMapPtrs[2]->size() > iter){
-            for(size_t n = 0; n < iter - 1; n++){ 
+            for(size_t n = 1; n <= iter; n++){ 
                 iter3++;
             }
             idx = iter3->second;
@@ -101,7 +101,7 @@ void AssembleParts_Stripes(size_t idx, std::vector<bool>& org, bool best, size_t
     if(idx != 4){
         auto iter4 = icFitnessMapPtrs[3]->rbegin();
         if(best && icFitnessMapPtrs[3]->size() > iter){
-            for(size_t n = 0; n < iter - 1; n++){ 
+            for(size_t n = 1; n <= iter; n++){ 
                 iter4++;
             }
             idx = iter4->second;
