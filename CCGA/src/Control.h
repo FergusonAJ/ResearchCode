@@ -22,9 +22,9 @@ std::function<void(std::vector<bool> &, std::ostream &)> print_fun_control = [](
         a *= 2;
     }
     os << "\n";
-    for(int y = 0; y < subHeight; y++){
-        for(int x = 0; x < subWidth; x++){
-            os << (org[x + y * subWidth + 18]? "1" : "0") << " ";
+    for(int y = 0; y < height; y++){
+        for(int x = 0; x < width; x++){
+            os << (org[x + y * width + 18]? "1" : "0") << " ";
         }
         os << std::endl;
     }
@@ -36,7 +36,7 @@ auto fit_fun_match_control = [](std::vector<bool> & org){
     ca.Reset();
     ca.SetUpdateFunc(GetUpdateFunc(org, bBlackMask, sBlackMask));
     std::vector<unsigned char> tmp = BitstringToVec(org, 18);
-    ca.AddSubsurface(tmp, subX, subY, subWidth);
+    ca.AddSubsurface(tmp, 0, 0, width);
     return GetMatchFitness();
 };
 
@@ -45,7 +45,7 @@ auto fit_fun_static_rep_control = [](std::vector<bool> & org){
     ca.Reset();
     ca.SetUpdateFunc(GetUpdateFunc(org, bBlackMask, sBlackMask));
     std::vector<unsigned char> tmp = BitstringToVec(org, 18);
-    ca.AddSubsurface(tmp, subX, subY, subWidth);
+    ca.AddSubsurface(tmp, 0, 0, width);
     double score = GetStaticRepFitness(); 
     return score;
 };

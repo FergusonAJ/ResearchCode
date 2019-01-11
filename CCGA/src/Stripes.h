@@ -9,9 +9,9 @@
 
 //Print functions
 std::function<void(std::vector<bool> &, std::ostream &)> print_fun_stripe_ic = [](std::vector<bool> & org, std::ostream & os) {
-    for(int y = 0; y < subHeight / 4; y++){
-        for(int x = 0; x < subWidth; x++){
-            os << (org[x + y * subWidth]? "1" : "0") << " ";
+    for(int y = 0; y < height / 4; y++){
+        for(int x = 0; x < width; x++){
+            os << (org[x + y * width]? "1" : "0") << " ";
         }
         os << std::endl;
     }
@@ -31,16 +31,16 @@ void AssembleParts_Stripes(size_t idx, std::vector<bool>& org, bool best, size_t
             ca.SetUpdateFunc(GetUpdateFunc(org, bBlackMask, sBlackMask));
             break;
         case 1:
-            ca.AddSubsurface(tmp, 0, 0, subWidth);
+            ca.AddSubsurface(tmp, 0, 0, width);
             break;
         case 2:
-            ca.AddSubsurface(tmp, 0, subHeight / 4, subWidth);
+            ca.AddSubsurface(tmp, 0, height / 4, width);
         break;
         case 3:
-            ca.AddSubsurface(tmp, 0, subHeight / 2, subWidth);
+            ca.AddSubsurface(tmp, 0, height / 2, width);
             break;
         case 4:
-            ca.AddSubsurface(tmp, 0, 3 * subHeight / 4, subWidth);
+            ca.AddSubsurface(tmp, 0, 3 * height / 4, width);
             break;
     }  
     if(idx != 0){
@@ -68,7 +68,7 @@ void AssembleParts_Stripes(size_t idx, std::vector<bool>& org, bool best, size_t
             idx = randPtr->GetUInt(0, rulesetWorldPtr->GetSize());    
         }
         tmp = BitstringToVec(icWorldPtrs[0]->GetOrg(idx));
-        ca.AddSubsurface(tmp, 0, 0, subWidth);
+        ca.AddSubsurface(tmp, 0, 0, width);
     }
     if(idx != 2){
         auto iter2 = icFitnessMapPtrs[1]->rbegin();
@@ -82,7 +82,7 @@ void AssembleParts_Stripes(size_t idx, std::vector<bool>& org, bool best, size_t
             idx = randPtr->GetUInt(0, rulesetWorldPtr->GetSize());    
         }
         tmp = BitstringToVec(icWorldPtrs[1]->GetOrg(idx));
-        ca.AddSubsurface(tmp, 0, subHeight / 4, subWidth);
+        ca.AddSubsurface(tmp, 0, height / 4, width);
     }
     if(idx != 3){
         auto iter3 = icFitnessMapPtrs[2]->rbegin();
@@ -96,7 +96,7 @@ void AssembleParts_Stripes(size_t idx, std::vector<bool>& org, bool best, size_t
             idx = randPtr->GetUInt(0, rulesetWorldPtr->GetSize());    
         }
         tmp = BitstringToVec(icWorldPtrs[2]->GetOrg(idx));
-        ca.AddSubsurface(tmp, 0, subHeight / 2, subWidth);
+        ca.AddSubsurface(tmp, 0, height / 2, width);
     }
     if(idx != 4){
         auto iter4 = icFitnessMapPtrs[3]->rbegin();
@@ -110,7 +110,7 @@ void AssembleParts_Stripes(size_t idx, std::vector<bool>& org, bool best, size_t
             idx = randPtr->GetUInt(0, rulesetWorldPtr->GetSize());    
         }
         tmp = BitstringToVec(icWorldPtrs[3]->GetOrg(idx));
-        ca.AddSubsurface(tmp, 0, 3 * subHeight / 4,  subWidth);
+        ca.AddSubsurface(tmp, 0, 3 * height / 4,  width);
     }
 }
 

@@ -21,7 +21,7 @@
 //Variables
 empCA::CellularAutomaton<unsigned char> ca;
 std::function<unsigned char(emp::Random &)> spawnFunc;
-int width, height, subWidth, subHeight, subX, subY, numSteps, checkSteps;
+int width, height, numSteps, checkSteps;
 size_t numBestCollaborators, numRandCollaborators;
 bool canMove, mustMove;
 std::string name;
@@ -35,10 +35,6 @@ emp::Random* randPtr;
 void Initialize(emp::Random* ptr){
     width = GetConfig().Fetch<int>("WIDTH");
     height = GetConfig().Fetch<int>("HEIGHT");
-    subWidth = GetConfig().Fetch<int>("SUB_WIDTH");
-    subHeight = GetConfig().Fetch<int>("SUB_HEIGHT");
-    subX = GetConfig().Fetch<int>("SUB_X");
-    subY = GetConfig().Fetch<int>("SUB_Y");
     numSteps = GetConfig().Fetch<int>("NUM_STEPS");
     mutRateFactor = GetConfig().Fetch<float>("MUT_RATE_SCALE");
     name = GetConfig().Fetch<std::string>("AUTOMATON");

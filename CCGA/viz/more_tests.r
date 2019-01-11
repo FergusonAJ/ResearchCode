@@ -1,9 +1,9 @@
 library(ggplot2)
 
 rm(list=ls())
-setwd('~/Documents/School/FA18/EC/TermProject/work/main/viz/tests')
+setwd('~/Research/CCGA/viz/out')
 
-job_id <- '2977842'
+job_id <- '6759876'
 
 hasBeenDone <- length(which(list.files() == paste(sep='', job_id, '_SCRUBBED.csv'))) > 0
 

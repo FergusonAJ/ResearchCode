@@ -25,9 +25,9 @@ std::vector<bool> GetRandomOrg_Quad_IC(emp::Random& rand){
 
 //Print functions
 std::function<void(std::vector<bool> &, std::ostream &)> print_fun_quad_ic = [](std::vector<bool> & org, std::ostream & os) {
-    for(int y = 0; y < subHeight / 2; y++){
-        for(int x = 0; x < subWidth / 2; x++){
-            os << (org[x + y * subWidth]? "1" : "0") << " ";
+    for(int y = 0; y < height / 2; y++){
+        for(int x = 0; x < width / 2; x++){
+            os << (org[x + y * width]? "1" : "0") << " ";
         }
         os << std::endl;
     }
@@ -47,16 +47,16 @@ void AssembleParts_Quads(size_t idx, std::vector<bool>& org, bool best, size_t i
             ca.SetUpdateFunc(GetUpdateFunc(org, bBlackMask, sBlackMask));
             break;
         case 1:
-            ca.AddSubsurface(tmp, 0, 0, subWidth/2);
+            ca.AddSubsurface(tmp, 0, 0, width/2);
             break;
         case 2:
-            ca.AddSubsurface(tmp, subWidth / 2, 0, subWidth/2);
+            ca.AddSubsurface(tmp, width / 2, 0, width/2);
         break;
         case 3:
-            ca.AddSubsurface(tmp, 0, subHeight / 2, subWidth/2);
+            ca.AddSubsurface(tmp, 0, height / 2, width/2);
             break;
         case 4:
-            ca.AddSubsurface(tmp, subWidth / 2, subHeight / 2, subWidth/2);
+            ca.AddSubsurface(tmp, width / 2, height / 2, width/2);
             break;
     }   
     if(idx != 0){
@@ -84,7 +84,7 @@ void AssembleParts_Quads(size_t idx, std::vector<bool>& org, bool best, size_t i
             idx = randPtr->GetUInt(0, rulesetWorldPtr->GetSize());    
         }
         tmp = BitstringToVec(icWorldPtrs[0]->GetOrg(idx));
-        ca.AddSubsurface(tmp, 0, 0, subWidth / 2);
+        ca.AddSubsurface(tmp, 0, 0, width / 2);
     }
     if(idx != 2){
         auto iter2 = icFitnessMapPtrs[1]->rbegin();
@@ -98,7 +98,7 @@ void AssembleParts_Quads(size_t idx, std::vector<bool>& org, bool best, size_t i
             idx = randPtr->GetUInt(0, rulesetWorldPtr->GetSize());    
         }
         tmp = BitstringToVec(icWorldPtrs[1]->GetOrg(idx));
-        ca.AddSubsurface(tmp, subWidth / 2, 0, subWidth / 2);
+        ca.AddSubsurface(tmp, width / 2, 0, width / 2);
     }
     if(idx != 3){
         auto iter3 = icFitnessMapPtrs[2]->rbegin();
@@ -112,7 +112,7 @@ void AssembleParts_Quads(size_t idx, std::vector<bool>& org, bool best, size_t i
             idx = randPtr->GetUInt(0, rulesetWorldPtr->GetSize());    
         }
         tmp = BitstringToVec(icWorldPtrs[2]->GetOrg(idx));
-        ca.AddSubsurface(tmp, 0, subHeight / 2, subWidth / 2);
+        ca.AddSubsurface(tmp, 0, height / 2, width / 2);
     }
     if(idx != 4){
         auto iter4 = icFitnessMapPtrs[3]->rbegin();
@@ -126,7 +126,7 @@ void AssembleParts_Quads(size_t idx, std::vector<bool>& org, bool best, size_t i
             idx = randPtr->GetUInt(0, rulesetWorldPtr->GetSize());    
         }
         tmp = BitstringToVec(icWorldPtrs[3]->GetOrg(idx));
-        ca.AddSubsurface(tmp, subWidth / 2, subHeight / 2,  subWidth / 2);
+        ca.AddSubsurface(tmp, width / 2, height / 2,  width / 2);
     }
 }
 
