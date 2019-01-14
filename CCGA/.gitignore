@@ -9,4 +9,4 @@ viz/output.png
 viz/tests
 copyFromHPCC.sh
 *.swp
-
+slurm
