@@ -23,7 +23,7 @@ empCA::CellularAutomaton<unsigned char> ca;
 std::function<unsigned char(emp::Random &)> spawnFunc;
 int width, height, numSteps, checkSteps;
 size_t numBestCollaborators, numRandCollaborators;
-bool canMove, mustMove;
+bool canMove, mustMove, standardizeMutRate;
 std::string name;
 float mutRateFactor;
 unsigned int bBlackMask, sBlackMask;
@@ -37,6 +37,7 @@ void Initialize(emp::Random* ptr){
     height = GetConfig().Fetch<int>("HEIGHT");
     numSteps = GetConfig().Fetch<int>("NUM_STEPS");
     mutRateFactor = GetConfig().Fetch<float>("MUT_RATE_SCALE");
+    standardizeMutRate = GetConfig().Fetch<bool>("STANDARDIZE_MUT");
     name = GetConfig().Fetch<std::string>("AUTOMATON");
     checkSteps = GetConfig().Fetch<int>("CHECK_STEPS");
     numBestCollaborators = (size_t)GetConfig().Fetch<int>("NUM_BEST_COLLABORATORS");
@@ -87,6 +88,8 @@ double GetStaticRepFitness(){
 std::function<size_t(std::vector<bool> &, emp::Random &)> mutate_fun_all = [](std::vector<bool> & org, emp::Random & rand) {
     size_t count = 0;
     float mutRate = 1.0f / org.size() * mutRateFactor;
+    if(standardizeMutRate)
+        mutRate = (1.0f * mutRateFactor) / (float)(width * height + 18);
     for(size_t i = 0; i < org.size(); i++){
         if(rand.GetDouble() < mutRate){
             org[i] = !org[i];

@@ -15,6 +15,7 @@ void ConfigInit(ConfigLoader& config){
     config.Register("NUM_GENS", loader_int, delete_int);
     
     config.Register("MUT_RATE_SCALE", loader_float, delete_float);
+    config.Register("STANDARDIZE_MUT", loader_bool, delete_bool);
     
     config.Register("WIDTH", loader_int, delete_int);
     config.Register("HEIGHT", loader_int, delete_int);
