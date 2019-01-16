@@ -1,5 +1,5 @@
 POP_SIZE: 100
-NUM_GENS: 50
+NUM_GENS: 250
 
 MUT_RATE_SCALE: 2
 
@@ -23,4 +23,4 @@ MUST_MOVE: FALSE
 B_BLACK_MASK: 0
 S_BLACK_MASK: 0
 
-OUTPUT_DIR: /mnt/gs18/scratch/users/fergu358/output/stripes/static_rep
+OUTPUT_DIR: /mnt/gs18/scratch/users/fergu358/output/control/static_rep/long
